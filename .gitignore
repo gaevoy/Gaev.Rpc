@@ -2,6 +2,7 @@ bin
 obj
 build
 packages
+node_modules
 _ReSharper.*
 *.ncrunchsolution
 *.user

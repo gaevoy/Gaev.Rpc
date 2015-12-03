@@ -1,0 +1,1 @@
+node_modules\.bin\nperf -c 100 -n 2000 http://localhost:8080/ping.json?payload=ping
