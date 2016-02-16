@@ -8,6 +8,7 @@ using Rebus.RabbitMq;
 using Rebus.Routing.TypeBased;
 using Rebus.Rpc;
 using Rebus.Rpc.Impl;
+using Rpc.Core;
 
 namespace ScalingDemo.ClientConsole
 {

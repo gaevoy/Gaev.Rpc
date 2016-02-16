@@ -1,4 +1,4 @@
-﻿namespace Rebus.Rpc.Impl
+﻿namespace Rpc.Core
 {
     public class RpcResponse
     {

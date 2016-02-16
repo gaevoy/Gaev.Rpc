@@ -6,6 +6,7 @@ using Rebus.Activation;
 using Rebus.Bus;
 using Rebus.Messages;
 using Rebus.Pipeline;
+using Rpc.Core;
 
 namespace Rebus.Rpc.Impl
 {

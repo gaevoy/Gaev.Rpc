@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Rebus.Activation;
 using Rebus.Bus;
+using Rpc.Core;
 
 namespace Rebus.Rpc.Impl
 {
@@ -21,7 +22,7 @@ namespace Rebus.Rpc.Impl
             activator.Handle<TRequest>(async (_, __, request) =>
             {
                 var response = await handle(request);
-                await bus.Reply(new RpcResponse { Payload = response });
+                if (response != null) await bus.Reply(new RpcResponse { Payload = response });
             });
             bus.Subscribe<TRequest>();
         }

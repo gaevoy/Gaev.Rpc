@@ -63,6 +63,10 @@
       <Project>{b33e5db0-df7b-425b-9b7f-85d035558cc9}</Project>
       <Name>Rebus.Rpc</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Rpc.Core\Rpc.Core.csproj">
+      <Project>{7A65C541-31C3-47AC-A91E-BDDAE850E404}</Project>
+      <Name>Rpc.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ScalingDemo.Shared\ScalingDemo.Shared.csproj">
       <Project>{0DC7C69B-63EA-47E8-964E-E68FE0822114}</Project>
       <Name>ScalingDemo.Shared</Name>

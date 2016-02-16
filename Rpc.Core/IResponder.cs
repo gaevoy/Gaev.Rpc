@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Rebus.Rpc
+namespace Rpc.Core
 {
     public interface IResponder
     {
