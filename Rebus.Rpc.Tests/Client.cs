@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Rebus.Activation;
 using Rebus.Bus;
 using Rebus.Config;
@@ -10,11 +12,12 @@ using Rpc.Core;
 
 namespace Rebus.Rpc.Tests
 {
-    public interface IClient 
+    public interface IClient
     {
         void Start(string nodeId = "");
         void Stop();
         object Ask(object request);
+        void AskManyTimes(object request, int times);
     }
 
     public class Client : MarshalByRefObject, IClient
@@ -34,6 +37,10 @@ namespace Rebus.Rpc.Tests
         public object Ask(object request)
         {
             return requestor.Ask(request).Result;
+        }
+        public void AskManyTimes(object request, int times)
+        {
+            Task.WhenAll(Enumerable.Range(0, times).Select(_ => requestor.Ask(request)));
         }
 
         public void Stop()

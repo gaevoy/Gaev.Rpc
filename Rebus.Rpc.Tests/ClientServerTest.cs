@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using NUnit.Framework;
 using Rebus.Rpc.Tests;
 
@@ -78,6 +80,32 @@ namespace Rebus.Rpc.Tests
             // Then
             Assert.AreEqual("A", resp1.Payload);
             Assert.AreEqual("B", resp2.Payload);
+        }
+
+        [Test]
+        public void PerformanceTest()
+        {
+            // Given
+            var server = New<Server>() as IServer;
+            server.Start("1");
+            server.On<Ping>(req => new Pong { Payload = req.Payload });
+            var client = New<Client>() as IClient;
+            client.Start("1");
+
+            // When
+            // warming-up
+            client.AskManyTimes(new Ping { Payload = "A" }, 10);
+            GC.Collect();
+            GC.Collect();
+            Thread.Sleep(100);
+            // measure
+            Stopwatch t = new Stopwatch();
+            t.Start();
+            client.AskManyTimes(new Ping { Payload = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." }, 1000);
+            t.Stop();
+
+            // Then
+            Console.WriteLine("Messages per second: {0}, run-time: {1}", 1000.0 / t.Elapsed.TotalSeconds, t.Elapsed);
         }
     }
 }
