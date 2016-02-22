@@ -17,7 +17,7 @@ namespace Rebus.Rpc.Impl
             this.bus = bus;
         }
 
-        public void On<TRequest>(Func<TRequest, Task<object>> handle)
+        public void On<TRequest>(Func<TRequest, Task<object>> handle) where TRequest : class
         {
             activator.Handle<TRequest>(async (_, __, request) =>
             {

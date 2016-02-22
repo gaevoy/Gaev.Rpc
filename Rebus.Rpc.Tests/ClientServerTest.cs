@@ -1,25 +1,20 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using NUnit.Framework;
-using Rebus.Rpc.Tests;
 
 namespace Rebus.Rpc.Tests
 {
-    [TestFixture]
-    public class ClientServerTest : IsolationTestBase
+    public abstract class ClientServerTest : IsolationTestBase
     {
         [Test]
         public void PingPongTest()
         {
             // Given
-            var server = New<Server>() as IServer;
+            var server = NewServer();
             server.Start("1");
             server.On<Ping>(req => new Pong { Payload = req.Payload });
-            var client = New<Client>() as IClient;
+            var client = NewClient();
             client.Start("1");
 
             // When
@@ -38,13 +33,13 @@ namespace Rebus.Rpc.Tests
         public void ShardingTest()
         {
             // Given
-            var server1 = New<Server>() as IServer;
+            var server1 = NewServer();
             server1.Start("1");
             server1.On<ShardRequest>(req => req.Shard == "1" ? new ShardResponse { Payload = req.Payload + "1" } : null);
-            var server2 = New<Server>() as IServer;
+            var server2 = NewServer();
             server2.Start("2");
             server2.On<ShardRequest>(req => req.Shard == "2" ? new ShardResponse { Payload = req.Payload + "2" } : null);
-            var client = New<Client>() as IClient;
+            var client = NewClient();
             client.Start("1");
 
             // When
@@ -65,12 +60,12 @@ namespace Rebus.Rpc.Tests
         public void SeveralClientsPerOneServerTest()
         {
             // Given
-            var server1 = New<Server>() as IServer;
+            var server1 = NewServer();
             server1.Start("1");
             server1.On<Ping>(req => new Pong { Payload = req.Payload });
-            var client1 = New<Client>() as IClient;
+            var client1 = NewClient();
             client1.Start("1");
-            var client2 = New<Client>() as IClient;
+            var client2 = NewClient();
             client2.Start("2");
 
             // When
@@ -82,14 +77,16 @@ namespace Rebus.Rpc.Tests
             Assert.AreEqual("B", resp2.Payload);
         }
 
-        [Test]
-        public void PerformanceTest()
+        [TestCase(5000)]
+        [TestCase(1000)]
+        [TestCase(500)]
+        public void PerformanceTest(int noOfIterations)
         {
             // Given
-            var server = New<Server>() as IServer;
+            var server = NewServer();
             server.Start("1");
             server.On<Ping>(req => new Pong { Payload = req.Payload });
-            var client = New<Client>() as IClient;
+            var client = NewClient();
             client.Start("1");
 
             // When
@@ -101,11 +98,14 @@ namespace Rebus.Rpc.Tests
             // measure
             Stopwatch t = new Stopwatch();
             t.Start();
-            client.AskManyTimes(new Ping { Payload = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." }, 1000);
+            client.AskManyTimes(new Ping { Payload = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." }, noOfIterations);
             t.Stop();
 
             // Then
-            Console.WriteLine("Messages per second: {0}, run-time: {1}", 1000.0 / t.Elapsed.TotalSeconds, t.Elapsed);
+            Console.WriteLine("Messages per second: {0}, run-time: {1}", noOfIterations / t.Elapsed.TotalSeconds, t.Elapsed);
         }
+
+        protected abstract IServer NewServer();
+        protected abstract IClient NewClient();
     }
 }

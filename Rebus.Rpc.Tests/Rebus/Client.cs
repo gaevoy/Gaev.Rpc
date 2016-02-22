@@ -10,16 +10,8 @@ using Rebus.Routing.TypeBased;
 using Rebus.Rpc.Impl;
 using Rpc.Core;
 
-namespace Rebus.Rpc.Tests
+namespace Rebus.Rpc.Tests.Rebus
 {
-    public interface IClient
-    {
-        void Start(string nodeId = "");
-        void Stop();
-        object Ask(object request);
-        void AskManyTimes(object request, int times);
-    }
-
     public class Client : MarshalByRefObject, IClient
     {
         string nodeId;
@@ -43,7 +35,7 @@ namespace Rebus.Rpc.Tests
             Task.WhenAll(Enumerable.Range(0, times).Select(_ => requestor.Ask(request)));
         }
 
-        public void Stop()
+        public void Dispose()
         {
             activator.Dispose();
         }

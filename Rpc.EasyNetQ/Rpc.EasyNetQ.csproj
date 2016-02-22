@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EC0D7550-D6A7-40E5-A47C-F587947C8232}</ProjectGuid>
+    <ProjectGuid>{EC09A11D-A79E-434C-ACED-357922CA2A83}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rebus.Rpc.Tests</RootNamespace>
-    <AssemblyName>Rebus.Rpc.Tests</AssemblyName>
+    <RootNamespace>Rpc.EasyNetQ</RootNamespace>
+    <AssemblyName>Rpc.EasyNetQ</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,7 +20,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,23 +28,19 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+    <Reference Include="EasyNetQ, Version=0.54.3.424, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EasyNetQ.0.54.3.424\lib\net45\EasyNetQ.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="RabbitMQ.Client, Version=3.5.4.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
-      <HintPath>..\packages\RabbitMQ.Client.3.5.4\lib\net40\RabbitMQ.Client.dll</HintPath>
+    <Reference Include="EasyNetQ.Management.Client, Version=0.47.20.72, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EasyNetQ.Management.Client.0.47.20.72\lib\net40\EasyNetQ.Management.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Rebus, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rebus.0.99.4\lib\NET45\Rebus.dll</HintPath>
-    </Reference>
-    <Reference Include="Rebus.RabbitMq">
-      <HintPath>..\packages\Rebus.RabbitMq.0.99.4\lib\NET45\Rebus.RabbitMq.dll</HintPath>
+    <Reference Include="RabbitMQ.Client, Version=3.6.0.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
+      <HintPath>..\packages\RabbitMQ.Client.3.6.0\lib\net45\RabbitMQ.Client.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -54,30 +48,20 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IClient.cs" />
-    <Compile Include="IServer.cs" />
-    <Compile Include="IsolationTestBase.cs" />
-    <Compile Include="ClientServerTest.cs" />
+    <Compile Include="EasyNetQRequestor.cs" />
+    <Compile Include="EasyNetQResponder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RebusClientServerTest.cs" />
-    <Compile Include="Rebus\Client.cs" />
-    <Compile Include="Rebus\Server.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Rebus.Rpc\Rebus.Rpc.csproj">
-      <Project>{b33e5db0-df7b-425b-9b7f-85d035558cc9}</Project>
-      <Name>Rebus.Rpc</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Rpc.Core\Rpc.Core.csproj">
-      <Project>{7a65c541-31c3-47ac-a91e-bddae850e404}</Project>
+      <Project>{7A65C541-31C3-47AC-A91E-BDDAE850E404}</Project>
       <Name>Rpc.Core</Name>
     </ProjectReference>
   </ItemGroup>
