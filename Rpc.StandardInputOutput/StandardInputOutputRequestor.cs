@@ -9,7 +9,7 @@ namespace Rpc.StandardInputOutput
     public class StandardInputOutputRequestor : IRequestor, IDisposable
     {
         private readonly StandardInputOutputBus _bus;
-        private readonly ConcurrentDictionary<Guid, TaskCompletionSource<object>> _result 
+        private readonly ConcurrentDictionary<Guid, TaskCompletionSource<object>> _result
             = new ConcurrentDictionary<Guid, TaskCompletionSource<object>>();
 
         public StandardInputOutputRequestor(Process process)
@@ -22,13 +22,13 @@ namespace Rpc.StandardInputOutput
             _bus = new StandardInputOutputBus(processId, Receive);
         }
 
-        public async Task<object> Ask(object request)
+        public Task<object> Ask(object request)
         {
             var message = new RpcMessage { RequestId = Guid.NewGuid(), Payload = request };
             var result = new TaskCompletionSource<object>();
             _result[message.RequestId] = result;
             _bus.Send(message);
-            return await result.Task.ConfigureAwait(false);
+            return result.Task;
         }
 
         private void Receive(object msg, StandardInputOutputBus bus)
