@@ -4,6 +4,8 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+// ReSharper disable MethodSupportsCancellation
+#pragma warning disable 4014
 
 namespace Rpc.StandardInputOutput
 {
@@ -16,21 +18,21 @@ namespace Rpc.StandardInputOutput
         private readonly CancellationTokenSource _cancellation = new CancellationTokenSource();
         private readonly TextWriter _input;
         private readonly Task _listening;
-        private readonly SemaphoreSlim _inputLock = new SemaphoreSlim(1, 1);
+        private readonly object _inputLock = new object();
 
-        public StandardInputOutputBus(TextWriter input, TextReader output, Func<object, StandardInputOutputBus, Task> receive)
+        public StandardInputOutputBus(TextWriter input, TextReader output, Action<object, StandardInputOutputBus> receive)
         {
             _input = input;
             _listening = Task.Run(() => ListenStandardOutput(_cancellation.Token, output, receive));
         }
 
-        public StandardInputOutputBus(Func<object, StandardInputOutputBus, Task> receive)
+        public StandardInputOutputBus(Action<object, StandardInputOutputBus> receive)
             : this(Console.Out, Console.In, receive) { }
 
-        public StandardInputOutputBus(Process process, Func<object, StandardInputOutputBus, Task> receive)
+        public StandardInputOutputBus(Process process, Action<object, StandardInputOutputBus> receive)
             : this(process.StandardInput, process.StandardOutput, receive) { }
 
-        public StandardInputOutputBus(int processId, Func<object, StandardInputOutputBus, Task> receive)
+        public StandardInputOutputBus(int processId, Action<object, StandardInputOutputBus> receive)
             : this(Process.GetProcessById(processId), receive) { }
 
         public void Dispose()
@@ -39,29 +41,21 @@ namespace Rpc.StandardInputOutput
             _listening.Wait();
         }
 
-
-        public async Task Send(object msg)
+        public void Send(object msg)
         {
-            await _inputLock.WaitAsync();
-            try
-            {
-                await _input.WriteLineAsync(JsonConvert.SerializeObject(msg, JsonSettings)).ConfigureAwait(false);
-            }
-            finally
-            {
-                _inputLock.Release();
-            }
+            var json = JsonConvert.SerializeObject(msg, JsonSettings);
+            lock (_inputLock)
+                _input.WriteLine(json);
         }
 
-
-        private async Task ListenStandardOutput(CancellationToken cancellation, TextReader output, Func<object, StandardInputOutputBus, Task> receive)
+        private async Task ListenStandardOutput(CancellationToken cancellation, TextReader output, Action<object, StandardInputOutputBus> receive)
         {
             while (true)
                 try
                 {
                     var json = await output.ReadLineAsync().WithCancellation(cancellation).ConfigureAwait(false);
                     var msg = JsonConvert.DeserializeObject(json, JsonSettings);
-                    await receive(msg, this).ConfigureAwait(false);
+                    Task.Run(() => receive(msg, this));
                 }
                 catch (OperationCanceledException) { return; }
                 catch (Exception) { /* ignore it */ }

@@ -27,11 +27,11 @@ namespace Rpc.StandardInputOutput
             var message = new RpcMessage { RequestId = Guid.NewGuid(), Payload = request };
             var result = new TaskCompletionSource<object>();
             _result[message.RequestId] = result;
-            await _bus.Send(message).ConfigureAwait(false);
+            _bus.Send(message);
             return await result.Task.ConfigureAwait(false);
         }
 
-        private Task Receive(object msg, StandardInputOutputBus bus)
+        private void Receive(object msg, StandardInputOutputBus bus)
         {
             var response = msg as RpcMessage;
             if (response != null)
@@ -40,7 +40,6 @@ namespace Rpc.StandardInputOutput
                 if (_result.TryRemove(response.RequestId, out responseTask))
                     responseTask.SetResult(response.Payload);
             }
-            return Task.CompletedTask;
         }
 
         public void Dispose()

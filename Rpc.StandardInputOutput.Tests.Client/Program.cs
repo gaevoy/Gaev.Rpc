@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading;
-using System.Threading.Tasks;
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
 namespace Rpc.StandardInputOutput.Tests.Client
 {
@@ -14,6 +13,7 @@ namespace Rpc.StandardInputOutput.Tests.Client
             using (var responder = new StandardInputOutputResponder())
             {
                 responder.On<Ping>(async msg => new Pong { Payload = msg.Payload });
+                responder.Start();
                 cancellation.Token.WaitHandle.WaitOne();
             }
         }
