@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rebus.Rpc", "Rebus.Rpc\Rebus.Rpc.csproj", "{B33E5DB0-DF7B-425B-9B7F-85D035558CC9}"
 EndProject
@@ -22,6 +22,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rpc.EasyNetQ", "Rpc.EasyNetQ\Rpc.EasyNetQ.csproj", "{EC09A11D-A79E-434C-ACED-357922CA2A83}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rpc.EasyNetQ.Tests", "Rpc.EasyNetQ.Tests\Rpc.EasyNetQ.Tests.csproj", "{99AE5203-52AC-4612-8995-B801B3ACDF5C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rpc.StandardInputOutput", "Rpc.StandardInputOutput\Rpc.StandardInputOutput.csproj", "{34D7D870-DEA5-49B5-BFC4-177E1DB8C4B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rpc.StandardInputOutput.Tests", "Rpc.StandardInputOutput.Tests\Rpc.StandardInputOutput.Tests.csproj", "{0964DD7D-F2DD-4FD5-B80A-BB85B5907213}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rpc.StandardInputOutput.Tests.Client", "Rpc.StandardInputOutput.Tests.Client\Rpc.StandardInputOutput.Tests.Client.csproj", "{0E00786E-FABA-4026-800A-6C269F255607}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +71,18 @@ Global
 		{99AE5203-52AC-4612-8995-B801B3ACDF5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99AE5203-52AC-4612-8995-B801B3ACDF5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99AE5203-52AC-4612-8995-B801B3ACDF5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34D7D870-DEA5-49B5-BFC4-177E1DB8C4B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34D7D870-DEA5-49B5-BFC4-177E1DB8C4B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34D7D870-DEA5-49B5-BFC4-177E1DB8C4B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34D7D870-DEA5-49B5-BFC4-177E1DB8C4B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0964DD7D-F2DD-4FD5-B80A-BB85B5907213}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0964DD7D-F2DD-4FD5-B80A-BB85B5907213}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0964DD7D-F2DD-4FD5-B80A-BB85B5907213}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0964DD7D-F2DD-4FD5-B80A-BB85B5907213}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E00786E-FABA-4026-800A-6C269F255607}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E00786E-FABA-4026-800A-6C269F255607}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E00786E-FABA-4026-800A-6C269F255607}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E00786E-FABA-4026-800A-6C269F255607}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
