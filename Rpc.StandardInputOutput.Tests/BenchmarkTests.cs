@@ -45,12 +45,12 @@ namespace Rpc.StandardInputOutput.Tests
         //[AllStatisticsColumn]
         public class StandardInputOutputBenchmark
         {
-            private ConsoleApp<Program> child;
+            private ConsoleApp child;
             private StandardInputOutputRequestor responder;
 
             public StandardInputOutputBenchmark()
             {
-                child = new ConsoleApp<Program>();
+                child = ConsoleApp.StartCSharp<Program>();
                 responder = new StandardInputOutputRequestor(child.Process);
             }
 
@@ -61,8 +61,8 @@ namespace Rpc.StandardInputOutput.Tests
             public Task Int()
             {
                 if (Iterations == 1)
-                    return responder.Ask(new Ping { Payload = 123 });
-                return Task.WhenAll(Enumerable.Range(0, Iterations).Select(e => responder.Ask(new Ping { Payload = e })));
+                    return responder.Ask(new Ping { Data = 123 });
+                return Task.WhenAll(Enumerable.Range(0, Iterations).Select(e => responder.Ask(new Ping { Data = e })));
             }
         }
 
@@ -73,12 +73,12 @@ namespace Rpc.StandardInputOutput.Tests
         public void PerformanceTest(int noOfIterations)
         {
             // Given
-            using (var child = new ConsoleApp<Program>())
+            using (var child = ConsoleApp.StartCSharp<Program>())
+            using (var responder = new StandardInputOutputRequestor(child.Process))
             {
-                var responder = new StandardInputOutputRequestor(child.Process);
                 // When
                 // warming-up
-                Task.WaitAll(Enumerable.Range(0, 10).Select(i => responder.Ask(new Ping { Payload = i })).ToArray());
+                Task.WaitAll(Enumerable.Range(0, 10).Select(i => responder.Ask(new Ping { Data = i })).ToArray());
                 GC.Collect();
                 GC.Collect();
                 Thread.Sleep(100);
@@ -89,7 +89,7 @@ namespace Rpc.StandardInputOutput.Tests
                 {
                     return responder.Ask(new Ping
                     {
-                        Payload =
+                        Data =
                             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
                     });
                 }).ToArray());

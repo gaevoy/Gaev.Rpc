@@ -3,15 +3,14 @@ using System.Diagnostics;
 
 namespace Rpc.StandardInputOutput.Tests
 {
-    public class ConsoleApp<T> : IDisposable
+    public class ConsoleApp : IDisposable
     {
         private bool _disposed;
-        public ConsoleApp()
+        public ConsoleApp(string appPath, string arguments = null)
         {
-            var appPath = new Uri(typeof(T).Assembly.CodeBase).AbsolutePath;
             Process = new Process
             {
-                StartInfo = new ProcessStartInfo(appPath)
+                StartInfo = new ProcessStartInfo(appPath, arguments)
                 {
                     CreateNoWindow = true,
                     UseShellExecute = false,
@@ -41,6 +40,17 @@ namespace Rpc.StandardInputOutput.Tests
         ~ConsoleApp()
         {
             Dispose();
+        }
+
+        public static ConsoleApp StartCSharp<T>()
+        {
+            return new ConsoleApp(new Uri(typeof(T).Assembly.CodeBase).AbsolutePath);
+        }
+        public static ConsoleApp StartNodeJs(string appPath)
+        {
+            var testPath = new Uri(typeof(ConsoleApp).Assembly.CodeBase);
+            var nodejsPath = new Uri(testPath, "../../../packages/Node.js.5.3.0/node.exe");
+            return new ConsoleApp(nodejsPath.AbsolutePath, appPath);
         }
     }
 }
