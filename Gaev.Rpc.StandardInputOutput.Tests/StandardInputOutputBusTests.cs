@@ -17,18 +17,18 @@ namespace Gaev.Rpc.StandardInputOutput.Tests
         }
 
         [TestCaseSource(nameof(Payloads))]
-        public async Task ShouldSendToChildProcess(object payload)
+        public async Task ShouldSendToChildProcess(object expectedData)
         {
             // Given
             using (var childApp = StartChildApp())
             using (var requestor = new StandardInputOutputRequestor(childApp.Process))
             {
                 // When
-                var response = await requestor.Ask(new Ping { Data = payload });
+                var response = await requestor.Ask(new Ping { Data = expectedData });
 
                 // Then
                 var actual = response as Pong;
-                Assert.AreEqual(payload, actual.Data);
+                Assert.AreEqual(expectedData, actual.Data);
                 Console.WriteLine(actual.Header);
             }
         }
