@@ -1,4 +1,4 @@
-﻿namespace Gaev.RebbitMqCommandBus.Shared
+﻿namespace ScalingDemo.Shared
 {
     public class PongMessage
     {

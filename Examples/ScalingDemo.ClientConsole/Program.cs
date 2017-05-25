@@ -1,14 +1,13 @@
 ﻿using System;
-using Gaev.RebbitMqCommandBus.Shared;
+using Gaev.Rpc;
+using Gaev.Rpc.Rebus;
 using Rebus.Activation;
 using Rebus.Bus;
 using Rebus.Config;
 using Rebus.Logging;
 using Rebus.RabbitMq;
 using Rebus.Routing.TypeBased;
-using Rebus.Rpc;
-using Rebus.Rpc.Impl;
-using Rpc.Core;
+using ScalingDemo.Shared;
 
 namespace ScalingDemo.ClientConsole
 {

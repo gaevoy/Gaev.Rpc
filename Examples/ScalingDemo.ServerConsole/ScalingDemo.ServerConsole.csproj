@@ -59,13 +59,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Rebus.Rpc\Rebus.Rpc.csproj">
+    <ProjectReference Include="..\..\Gaev.Rpc.Rebus\Gaev.Rpc.Rebus.csproj">
       <Project>{B33E5DB0-DF7B-425B-9B7F-85D035558CC9}</Project>
-      <Name>Rebus.Rpc</Name>
+      <Name>Gaev.Rpc.Rebus</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Rpc.Core\Rpc.Core.csproj">
+    <ProjectReference Include="..\..\Gaev.Rpc\Gaev.Rpc.csproj">
       <Project>{7A65C541-31C3-47AC-A91E-BDDAE850E404}</Project>
-      <Name>Rpc.Core</Name>
+      <Name>Gaev.Rpc</Name>
     </ProjectReference>
     <ProjectReference Include="..\ScalingDemo.Shared\ScalingDemo.Shared.csproj">
       <Project>{0DC7C69B-63EA-47E8-964E-E68FE0822114}</Project>
