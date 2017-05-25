@@ -9,21 +9,22 @@ namespace Gaev.Rpc.StandardInputOutput.Tests
     [TestFixture("nodejs")]
     public class StandardInputOutputBusTests
     {
-        private readonly string _consoleApp;
+        private readonly string _childAppType;
 
-        public StandardInputOutputBusTests(string consoleApp)
+        public StandardInputOutputBusTests(string childAppType)
         {
-            _consoleApp = consoleApp;
+            _childAppType = childAppType;
         }
+
         [TestCaseSource(nameof(Payloads))]
         public async Task ShouldSendToChildProcess(object payload)
         {
             // Given
-            using (var child = StartChildApp())
-            using (var responder = new StandardInputOutputRequestor(child.Process))
+            using (var childApp = StartChildApp())
+            using (var requestor = new StandardInputOutputRequestor(childApp.Process))
             {
                 // When
-                var response = await responder.Ask(new Ping { Data = payload });
+                var response = await requestor.Ask(new Ping { Data = payload });
 
                 // Then
                 var actual = response as Pong;
@@ -44,7 +45,7 @@ namespace Gaev.Rpc.StandardInputOutput.Tests
 
         private ConsoleApp StartChildApp()
         {
-            switch (_consoleApp)
+            switch (_childAppType)
             {
                 case "csharp": return ConsoleApp.StartCSharp<Program>();
                 case "nodejs":
