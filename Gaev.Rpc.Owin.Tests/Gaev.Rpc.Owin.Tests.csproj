@@ -57,7 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BenchmarkTests.cs" />
-    <Compile Include="RpcResponderTests.cs" />
+    <Compile Include="OwinResponderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

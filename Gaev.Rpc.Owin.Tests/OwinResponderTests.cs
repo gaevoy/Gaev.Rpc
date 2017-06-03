@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace Gaev.Rpc.Owin.Tests
 {
-    public class RpcResponderTests
+    public class OwinResponderTests
     {
         [TestCaseSource(nameof(Payloads))]
         public async Task ShouldSendAndRespond(object expectedData)
